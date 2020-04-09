@@ -1,24 +1,24 @@
 <template>
-  <div class="box-border">
-    <header class="flex max-w-screen-xl m-auto">
+  <div class="grid grid-rows-layout min-h-screen box-border">
+    <header class="flex w-full max-w-screen-xl m-auto">
       <img src="img/slim-logo.jpg" class="block w-16 h-16" alt="Slim logo" />
       <h2 class="m-0 p-2 text-3xl font-light">
         Slim launcher
       </h2>
-      <nav class="flex-grow flex justify-end p-3">
+      <nav class="flex flex-grow justify-end p-3">
         <a href="https://github.com/sduduzog/slim-launcher" class="block p-2">
           <ic-github></ic-github>
         </a>
       </nav>
     </header>
-    <main role="main" class="lg:p-12">
+    <main role="main" class="flex-grow lg:p-12">
       <section
         role="banner"
         class="m-auto md:max-w-screen-md lg:max-w-screen-lg text-2xl lg:text-3xl"
       >
         <div class="grid m-auto col-gap-10 pt-12 gap-10 md:grid-cols-2">
           <h1
-            class="text-center p-4 md:px-10 md:col-span-2 lg:row-start-1 lg:pt-16 lg:pb-0"
+            class="text-center p-4 md:px-10 col-span-2 lg:row-start-1 lg:pt-16 lg:pb-0"
           >
             A minimalist launcher that only allows you to use fewer apps on your
             phone
@@ -51,7 +51,7 @@
         </div>
       </section>
     </main>
-    <footer class="text-center p-4 hidden">
+    <footer class="text-center p-4">
       <p>Made with ❤ by <a href="https://sduduzog.com">Sdu</a></p>
     </footer>
   </div>

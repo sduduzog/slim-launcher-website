@@ -7,6 +7,9 @@
 module.exports = {
   theme: {
     extend: {
+      gridTemplateRows: {
+        layout: 'auto 1fr auto'
+      },
       fontFamily: {
         sans: ['Ubuntu']
       }
