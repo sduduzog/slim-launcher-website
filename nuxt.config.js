@@ -4,15 +4,16 @@ export default {
    ** Headers of the page
    */
   head: {
-    title: '',
+    title: 'Slim launcher',
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' }
-      // {
-      //   hid: 'description',
-      //   name: 'description',
-      //   content: ''
-      // }
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      {
+        hid: 'description',
+        name: 'description',
+        content:
+          'Less distraction, more life - a minimalist launcher for your android phone'
+      }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
