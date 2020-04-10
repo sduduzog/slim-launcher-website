@@ -24,7 +24,7 @@
             phone
           </h1>
           <img
-            src="img/screenshot.png"
+            src="img/screenshot-min.png"
             class="screenshot col-span-2 lg:row-start-2 lg:row-span-2"
             alt="Home screen screenshot"
           />
