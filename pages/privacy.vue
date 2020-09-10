@@ -1,16 +1,19 @@
 <template>
   <div>
     <app-header></app-header>
-    <div class="max-w-screen-md m-auto p-6 mt-12">
+    <div class="max-w-screen-md m-auto p-6 mt-12 space-y-2">
       <h1 class="text-3xl font-bold">Privacy Policy</h1>
       <h2 class="text-2xl font-semibold">
         Slim launcher does, and will never, have access to the internet.
       </h2>
+      <h3 class="text-xl">Definitions</h3>
+      <p>We - The dev, contributors and/or the app itself as an entity</p>
       <ul class="space-y-4">
         <li>
-          All the data i.e. in-app preferences etc, captured by slim launcher
-          will never leave your device, as such, we do not retrieve or collect
-          any information about you.
+          Slim was made with your privacy in mind, so we do not collect
+          personally identifiable information about you. In other words, we do
+          not collect information such as your name, address, phone number,
+          email address or precise geographic location.
         </li>
         <li>
           We may update our Privacy Policy from time to time. Thus, you are
