@@ -1,16 +1,6 @@
 <template>
   <div class="grid grid-rows-layout min-h-screen box-border">
-    <header class="flex w-full max-w-screen-xl m-auto">
-      <img src="img/slim-logo.jpg" class="block w-16 h-16" alt="Slim logo" />
-      <h2 class="m-0 p-2 text-3xl font-light">
-        Slim launcher
-      </h2>
-      <nav class="flex flex-grow justify-end p-3">
-        <a href="https://github.com/sduduzog/slim-launcher" class="block p-2">
-          <ic-github></ic-github>
-        </a>
-      </nav>
-    </header>
+    <app-header></app-header>
     <main role="main" class="flex-grow lg:p-12">
       <section
         role="banner"
@@ -53,15 +43,18 @@
     </main>
     <footer class="text-center p-4">
       <p>Made with ❤ by <a href="https://sduduzog.com">Sdu</a></p>
+      <p>
+        <nuxt-link to="/privacy">Privacy Policy</nuxt-link>
+      </p>
     </footer>
   </div>
 </template>
 
 <script>
-import IcGithub from '@/components/ic-github.vue'
+import AppHeader from '@/components/app-header.vue'
 export default {
   components: {
-    IcGithub
+    AppHeader
   }
 }
 </script>
