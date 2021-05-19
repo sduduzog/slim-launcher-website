@@ -42,7 +42,7 @@
       </section>
     </main>
     <footer class="text-center p-4">
-      <p>Made with ❤ by <a href="https://sduduzog.com">Sdu</a></p>
+      <p>Made with ❤ by <a href="https://iamsdu.online">Sdu</a> and the community</p>
       <p>
         <nuxt-link to="/privacy">Privacy Policy</nuxt-link>
       </p>
