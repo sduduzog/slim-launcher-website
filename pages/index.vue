@@ -42,7 +42,7 @@
       </section>
     </main>
     <footer class="text-center p-4">
-      <p>Made with ❤ by <a href="https://iamsdu.online">Sdu</a> and the community</p>
+      <p>Made with ❤ by <a href="https://iamsdu.online">Sdu</a> and the <a href="https://github.com/sduduzog/slim-launcher/graphs/contributors">community</a></p>
       <p>
         <nuxt-link to="/privacy">Privacy Policy</nuxt-link>
       </p>
