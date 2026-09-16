@@ -24,7 +24,7 @@ export default {
   /*
    ** Global CSS
    */
-  css: [],
+  css: ['~/assets/css/tailwind.css'],
   /*
    ** Plugins to load before mounting the App
    */
@@ -34,9 +34,7 @@ export default {
    */
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
-    '@nuxtjs/eslint-module',
-    // Doc: https://github.com/nuxt-community/nuxt-tailwindcss
-    '@nuxtjs/tailwindcss'
+    '@nuxtjs/eslint-module'
   ],
   /*
    ** Nuxt.js modules
@@ -46,6 +44,16 @@ export default {
    ** Build configuration
    */
   build: {
+    postcss: {
+      postcssOptions: {
+        plugins: {
+          tailwindcss: require('./tailwind.config.js')
+        },
+        preset: {
+          stage: 1
+        }
+      }
+    },
     /*
      ** You can extend webpack config here
      */
