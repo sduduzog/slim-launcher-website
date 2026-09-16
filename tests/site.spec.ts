@@ -111,7 +111,7 @@ test('privacy route and assets work on direct load and refresh', async ({
 }, testInfo) => {
   for (const route of ['/privacy', '/privacy/']) {
     const response = await page.goto(route)
-    expect(response?.status()).toBe(200)
+    expect([200, 304]).toContain(response?.status())
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(
       'Privacy Policy',
     )
@@ -205,6 +205,19 @@ test('static server returns a real 404 instead of the home page', async ({
   ).toBeVisible()
   await page.getByRole('link', { name: 'Return to the home page' }).click()
   await expect(page).toHaveURL('/')
+})
+
+test('privacy uses static HTML and canonical URLs', async ({ request }) => {
+  const response = await request.get('/privacy')
+  expect(response.status()).toBe(200)
+  expect(response.headers()['content-type']).toContain('text/html')
+  expect(await response.text()).toContain(
+    'Slim Launcher has no internet access.',
+  )
+
+  const redirect = await request.get('/privacy/', { maxRedirects: 0 })
+  expect(redirect.status()).toBe(307)
+  expect(redirect.headers().location).toBe('/privacy')
 })
 
 test('public assets return their actual file types', async ({ request }) => {

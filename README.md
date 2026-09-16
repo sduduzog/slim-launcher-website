@@ -1,12 +1,14 @@
 # Slim Launcher website
 
 [slimlauncher.com](https://slimlauncher.com) is a static Nuxt 4 / Vue 3 site.
-The home page and privacy policy are prerendered; hosting requires no application
-server, database, or Cloudflare Worker.
+The home page and privacy policy are prerendered and hosted with Cloudflare
+Workers Static Assets. No application server, Worker script, or database runs
+in production.
 
 ## Development
 
-Use Node.js from `.node-version` and npm:
+Use Node.js from `.node-version` and npm. The lint toolchain requires Node
+24.15.0 or newer within the Node 24 release line:
 
 ```sh
 npm ci
@@ -28,7 +30,8 @@ npx playwright install chromium firefox webkit
 npm run check
 ```
 
-`check` runs ESLint, Prettier, type checking, static generation, and browser tests.
+`check` runs ESLint, Prettier, type checking, static generation, a Wrangler deploy
+dry run, and browser tests against the local Cloudflare runtime.
 CI runs the same checks on pushes to `master` and pull requests. The tests cover
 desktop/mobile layouts, direct loads and refreshes, working images and links,
 privacy wording, keyboard navigation, no-JavaScript rendering, and 404 behavior.
@@ -41,37 +44,53 @@ npm run build
 npm run preview
 ```
 
-The preview serves `.output/public` at `http://127.0.0.1:4173`, without a catch-all
-SPA rewrite. Run `npm test` after building to rerun just the browser tests.
+The preview uses local Wrangler to serve `.output/public` at
+`http://127.0.0.1:4173`, without a catch-all SPA rewrite or remote deployment.
+Run `npm test` after building to rerun just the browser tests.
 
-## Cloudflare Pages
+## Cloudflare Workers Static Assets
 
-Connect this repository to a **Pages** project with these settings:
+Use the existing `slim-launcher-website` **Workers** project with these build settings:
 
-| Setting                | Value                          |
-| ---------------------- | ------------------------------ |
-| Production branch      | `master`                       |
-| Root directory         | Repository root                |
-| Build variable         | `SKIP_DEPENDENCY_INSTALL=true` |
-| Build command          | `npm ci && npm run build`      |
-| Build output directory | `.output/public`               |
+| Setting           | Value                          |
+| ----------------- | ------------------------------ |
+| Production branch | `master`                       |
+| Root directory    | Repository root                |
+| Build variable    | `SKIP_DEPENDENCY_INSTALL=true` |
+| Build command     | `npm ci && npm run build`      |
+| Deploy command    | `npm run deploy`               |
 
 The `.node-version` file pins the build runtime and `package-lock.json` pins
-dependency resolution. Include dev dependencies when building. No secrets or
-Wrangler deploy command are needed for this Pages Git integration.
+dependency resolution, including Wrangler. Remove any dashboard `NODE_VERSION`
+override that still selects an older Node release. Include dev dependencies when
+building. Workers Builds provides deployment authentication; no credentials
+belong in the repository.
 
-**When migrating an existing deployment, change its output directory from `dist`
-to `.output/public`.** Do not restore the old `/* /index.html 200` redirect.
-`/privacy` must serve the prerendered policy, while unknown paths return HTTP 404
-using the generated `404.html`.
+The committed `wrangler.jsonc` deploys **only `.output/public`**. It intentionally
+has no `main` entry point and no build hook: Cloudflare's build step already runs
+`nuxt generate`, which produces no server entry point. Keep Nitro's `static`
+preset. Do not run Wrangler's Nuxt auto-setup or change to `cloudflare-module`.
+The explicit `--config wrangler.jsonc` in the deploy script also avoids selecting
+an old generated `.wrangler/deploy/config.json` from a cached server build.
+
+Do not restore the old `/* /index.html 200` redirect. `/privacy` serves the
+prerendered policy, `/privacy/` redirects to `/privacy`, and unknown paths return
+HTTP 404 using the generated `404.html`.
+
+For a manual release after authenticating with Cloudflare:
+
+```sh
+npm run build
+npm run deploy:check
+npm run deploy
+```
 
 Before promoting the migration, confirm the preview uses the intended commit.
 Check `/`, `/privacy`, `/privacy/`, and an unknown URL; verify images and download
 links at desktop and mobile widths, including with JavaScript disabled. Only then
-promote production or attach `slimlauncher.com` under custom domains.
+promote production or attach `slimlauncher.com` as a Worker custom domain.
 
 Keep the last working production deployment available for Cloudflare rollback.
-If rebuilding an older Nuxt 2 commit, use its original `dist` output setting.
 Dependabot branch builds are previews, not proof that `master` failed.
 
 ## Dependency updates

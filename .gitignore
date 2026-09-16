@@ -69,6 +69,8 @@ typings/
 # nuxt.js build output
 .nuxt
 .output/
+.wrangler/
+.dev.vars*
 playwright-report/
 test-results/
 *.tsbuildinfo
