@@ -1,32 +1,88 @@
-slimlauncher.com
+# Slim Launcher website
 
-## Build
+[slimlauncher.com](https://slimlauncher.com) is a static Nuxt 4 / Vue 3 site.
+The home page and privacy policy are prerendered; hosting requires no application
+server, database, or Cloudflare Worker.
 
-Use the Node.js version in `.node-version`, then run:
+## Development
+
+Use Node.js from `.node-version` and npm:
 
 ```sh
 npm ci
-npm run build
+npm run dev
 ```
 
-The static site is generated in `dist/`. Commit `package-lock.json` when
-dependencies change so local and Cloudflare builds use the same versions.
+Pages and components live in `app/`; public images live in `public/img/` and are
+referenced with root-relative `/img/...` URLs. Global styles use Tailwind CSS 4
+through its Vite plugin. The original system-font stack, typography, and layout
+are retained without the previously unused Google Fonts import.
 
-Tailwind CSS 1 is configured directly through Nuxt's PostCSS pipeline to preserve
-the existing styles without the legacy Nuxt Tailwind module.
+Tailwind 4 requires modern browsers: Chrome 111+, Safari 16.4+, and Firefox 128+.
+The build uses TypeScript 5.9 with `vue-tsc` for Vue template checking.
+
+## Validation
+
+```sh
+npx playwright install chromium firefox webkit
+npm run check
+```
+
+`check` runs ESLint, Prettier, type checking, static generation, and browser tests.
+CI runs the same checks on pushes to `master` and pull requests. The tests cover
+desktop/mobile layouts, direct loads and refreshes, working images and links,
+privacy wording, keyboard navigation, no-JavaScript rendering, and 404 behavior.
+Browser screenshots and failure traces are saved as CI artifacts.
+
+To inspect a production build locally:
+
+```sh
+npm run build
+npm run preview
+```
+
+The preview serves `.output/public` at `http://127.0.0.1:4173`, without a catch-all
+SPA rewrite. Run `npm test` after building to rerun just the browser tests.
 
 ## Cloudflare Pages
 
 Connect this repository to a **Pages** project with these settings:
 
-- Production branch: `master`
-- Root directory: repository root
-- Build command: `npm run build`
-- Build output directory: `dist`
+| Setting                | Value                          |
+| ---------------------- | ------------------------------ |
+| Production branch      | `master`                       |
+| Root directory         | Repository root                |
+| Build variable         | `SKIP_DEPENDENCY_INSTALL=true` |
+| Build command          | `npm ci && npm run build`      |
+| Build output directory | `.output/public`               |
 
-The committed `.node-version` and npm lockfile configure the runtime and dependency
-installation. If automatic installation still selects Bun, set the build variable
-`SKIP_DEPENDENCY_INSTALL=true` and use `npm ci && npm run build` as the build command.
+The `.node-version` file pins the build runtime and `package-lock.json` pins
+dependency resolution. Include dev dependencies when building. No secrets or
+Wrangler deploy command are needed for this Pages Git integration.
 
-Check the home page and `/privacy` on the preview domain before attaching
-`slimlauncher.com` under the project's custom domains.
+**When migrating an existing deployment, change its output directory from `dist`
+to `.output/public`.** Do not restore the old `/* /index.html 200` redirect.
+`/privacy` must serve the prerendered policy, while unknown paths return HTTP 404
+using the generated `404.html`.
+
+Before promoting the migration, confirm the preview uses the intended commit.
+Check `/`, `/privacy`, `/privacy/`, and an unknown URL; verify images and download
+links at desktop and mobile widths, including with JavaScript disabled. Only then
+promote production or attach `slimlauncher.com` under custom domains.
+
+Keep the last working production deployment available for Cloudflare rollback.
+If rebuilding an older Nuxt 2 commit, use its original `dist` output setting.
+Dependabot branch builds are previews, not proof that `master` failed.
+
+## Dependency updates
+
+Commit the npm lockfile with dependency changes and use `npm ci` in CI/hosting.
+Dependabot groups minor/patch npm updates and opens major updates separately.
+Require the `validate` CI job and human review through GitHub branch protection;
+this repository does not enable auto-merge. Major Nuxt, Vue, and Tailwind upgrades
+need migration review rather than a blind dependency bump. Close obsolete Nuxt 2
+upgrade PRs after this migration lands.
+
+Review `npm audit` results in context: this project deploys static files, but
+build-tool vulnerabilities can still affect CI and development. Do not use
+`npm audit fix --force` to bypass compatibility review.

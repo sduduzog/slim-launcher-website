@@ -68,6 +68,10 @@ typings/
 
 # nuxt.js build output
 .nuxt
+.output/
+playwright-report/
+test-results/
+*.tsbuildinfo
 
 # Nuxt generate
 dist

@@ -4,24 +4,35 @@
   "description": "Slim launcher website",
   "author": "Beautus",
   "private": true,
+  "type": "module",
+  "engines": {
+    "node": "^24.11.0"
+  },
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt generate",
-    "start": "nuxt start",
-    "lint": "eslint --ext .js,.vue --ignore-path .gitignore ."
+    "preview": "serve .output/public --listen tcp://127.0.0.1:4173",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "format:check": "prettier --check .",
+    "typecheck": "nuxt typecheck",
+    "test": "playwright test",
+    "check": "npm run lint && npm run format:check && npm run typecheck && npm run build && npm test"
   },
   "dependencies": {
-    "nuxt": "2.18.1"
+    "nuxt": "4.5.2"
   },
   "devDependencies": {
-    "@nuxtjs/eslint-config": "^2.0.0",
-    "@nuxtjs/eslint-module": "^1.0.0",
-    "babel-eslint": "^10.0.1",
-    "eslint": "^6.1.0",
-    "eslint-config-prettier": "^6.10.0",
-    "eslint-plugin-nuxt": ">=0.4.2",
-    "eslint-plugin-prettier": "^3.1.2",
-    "prettier": "^1.19.1",
-    "tailwindcss": "1.9.6"
+    "@nuxt/eslint": "^1.17.0",
+    "@playwright/test": "^1.63.0",
+    "@tailwindcss/vite": "4.3.3",
+    "@types/node": "^24.13.5",
+    "eslint": "^10.10.0",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.9.7",
+    "serve": "^14.2.6",
+    "tailwindcss": "4.3.3",
+    "typescript": "~5.9.3",
+    "vue-tsc": "^3.3.11"
   }
 }

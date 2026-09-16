@@ -1,12 +1,12 @@
 <template>
   <div>
-    <app-header></app-header>
-    <div class="max-w-screen-md m-auto p-6 mt-12 space-y-2">
+    <AppHeader />
+    <main class="max-w-[48rem] mx-auto p-6 mt-12 flex flex-col gap-2">
       <h1 class="text-3xl font-bold">Privacy Policy</h1>
       <h2 class="text-2xl font-semibold">
         Slim Launcher has no internet access.
       </h2>
-      <ul class="space-y-4">
+      <ul class="flex flex-col gap-4">
         <li>
           Slim Launcher does not transmit user or device data off the device.
           The app has no user accounts, analytics, advertising, telemetry, or
@@ -26,14 +26,6 @@
           You can review the code to see how it works.
         </li>
       </ul>
-    </div>
+    </main>
   </div>
 </template>
-<script>
-import AppHeader from '@/components/app-header.vue'
-export default {
-  components: {
-    AppHeader
-  }
-}
-</script>
