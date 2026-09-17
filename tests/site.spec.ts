@@ -2,10 +2,17 @@ import { expect, test } from '@playwright/test'
 
 const sourceUrl = 'https://github.com/sduduzog/slim-launcher'
 const policy = [
-  'Slim Launcher has no internet access.',
-  'Slim Launcher does not transmit user or device data off the device. The app has no user accounts, analytics, advertising, telemetry, or data-sharing functionality.',
-  "Preferences and selected-app information are stored only on your device and are used only to provide the launcher's features.",
-  'Uninstalling the app removes its locally stored app data, subject to normal Android behavior.',
+  'This policy covers the Slim Launcher Android app, maintained by Sdu (sduduzog).',
+  'Slim Launcher has no internet permission, accounts, analytics, advertising, or telemetry.',
+  'It does not send your launcher data to the developer or sell or share it with third parties.',
+  'Slim Launcher reads the apps available in your personal and work profiles so you can find, select, and launch them.',
+  'It stores your selected apps, their names and launch identifiers, profile identifiers, custom labels, and display order in a local database.',
+  "These records are used only for launcher features and are protected by Android's app-private storage.",
+  'The app requests the Ubuntu font from Google Play services, which may download it.',
+  "Clear Slim Launcher's storage in Android settings or uninstall it to remove its local app data.",
+  'The app disables Android cloud backup; device-to-device transfers may still depend on your device manufacturer and Android version.',
+  'The developer holds no server copy of your launcher data.',
+  'Posts are public: do not include personal or sensitive information.',
   'Slim Launcher is open source. You can review the code to see how it works.',
 ]
 
@@ -98,6 +105,7 @@ test('home page preserves links, images, metadata, and responsive layout', async
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
     'Privacy Policy',
   )
+  await expect(page).toHaveTitle('Privacy Policy | Slim Launcher')
   await page.getByRole('link', { name: 'Slim Launcher home' }).click()
   await expect(page).toHaveURL('/')
   await expect(page.getByRole('heading', { level: 1 })).toContainText(
@@ -124,6 +132,12 @@ test('privacy route and assets work on direct load and refresh', async ({
     await expect(
       page.getByRole('link', { name: 'open source', exact: true }),
     ).toHaveAttribute('href', sourceUrl)
+    await expect(
+      page.getByRole('link', { name: 'GitHub Issues' }),
+    ).toHaveAttribute('href', `${sourceUrl}/issues`)
+    await expect(
+      page.getByRole('link', { name: "Google's privacy policy" }),
+    ).toHaveAttribute('href', 'https://policies.google.com/privacy')
     const logo = page.getByAltText('Slim logo')
     await expect(logo).toHaveAttribute('src', '/img/slim-logo.jpg')
     await expect
@@ -212,7 +226,7 @@ test('privacy uses static HTML and canonical URLs', async ({ request }) => {
   expect(response.status()).toBe(200)
   expect(response.headers()['content-type']).toContain('text/html')
   expect(await response.text()).toContain(
-    'Slim Launcher has no internet access.',
+    'Slim Launcher has no internet permission, accounts, analytics,',
   )
 
   const redirect = await request.get('/privacy/', { maxRedirects: 0 })
