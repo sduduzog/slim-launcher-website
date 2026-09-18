@@ -5,8 +5,10 @@
   "author": "Beautus",
   "private": true,
   "type": "module",
+  "packageManager": "npm@11.11.0",
   "engines": {
-    "node": "^24.15.0"
+    "node": "24.18.0",
+    "npm": "11.11.0"
   },
   "scripts": {
     "dev": "nuxt",
@@ -14,27 +16,31 @@
     "preview": "wrangler dev --config wrangler.jsonc --local --ip 127.0.0.1 --port 4173",
     "deploy": "wrangler deploy --config wrangler.jsonc",
     "deploy:check": "wrangler deploy --config wrangler.jsonc --dry-run",
-    "postinstall": "nuxt prepare",
-    "lint": "eslint .",
+    "setup": "nuxt prepare",
+    "lint": "nuxt prepare && eslint .",
+    "browsers:install": "playwright install chromium firefox webkit",
+    "browsers:install:ci": "playwright install --with-deps chromium firefox webkit",
+    "audit": "npm audit --audit-level=low",
+    "supply-chain:check": "node scripts/check-supply-chain.mjs && node --test scripts/check-supply-chain.test.mjs",
     "format:check": "prettier --check .",
     "typecheck": "nuxt typecheck",
     "test": "playwright test",
-    "check": "npm run lint && npm run format:check && npm run typecheck && npm run build && npm run deploy:check && npm test"
+    "check": "npm run supply-chain:check && npm run lint && npm run format:check && npm run typecheck && npm run build && npm run deploy:check && npm test"
   },
   "dependencies": {
     "nuxt": "4.5.2"
   },
   "devDependencies": {
-    "@nuxt/eslint": "^1.17.0",
-    "@playwright/test": "^1.63.0",
+    "@nuxt/eslint": "1.17.0",
+    "@playwright/test": "1.63.0",
     "@tailwindcss/vite": "4.3.3",
-    "@types/node": "^24.13.5",
-    "eslint": "^10.10.0",
-    "eslint-config-prettier": "^10.1.8",
-    "prettier": "^3.9.7",
+    "@types/node": "24.13.5",
+    "eslint": "10.10.0",
+    "eslint-config-prettier": "10.1.8",
+    "prettier": "3.9.7",
     "tailwindcss": "4.3.3",
-    "typescript": "~5.9.3",
-    "vue-tsc": "^3.3.11",
+    "typescript": "5.9.3",
+    "vue-tsc": "3.3.11",
     "wrangler": "4.132.0"
   }
 }
