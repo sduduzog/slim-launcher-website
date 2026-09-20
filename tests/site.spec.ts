@@ -4,11 +4,18 @@ const sourceUrl = 'https://github.com/sduduzog/slim-launcher'
 const policy = [
   'This policy covers the Slim Launcher Android app, maintained by Sdu (sduduzog).',
   'Slim Launcher has no internet permission, accounts, analytics, advertising, or telemetry.',
-  'It does not send your launcher data to the developer or sell or share it with third parties.',
+  'It does not automatically transmit launcher data or other information from the app to the developer.',
   'Slim Launcher reads the apps available in your personal and work profiles so you can find, select, and launch them.',
   'It stores your selected apps, their names and launch identifiers, profile identifiers, custom labels, and display order in a local database.',
   "These records are used only for launcher features and are protected by Android's app-private storage.",
-  'The app requests the Ubuntu font from Google Play services, which may download it.',
+  'Slim Launcher bundles its fonts with the app and does not download fonts or other resources at runtime.',
+  'Those apps handle their own data independently, and Slim Launcher does not read their contents.',
+  'Slim Launcher does not automatically collect or transmit your email address.',
+  'If you voluntarily contact the developer by email, including through the developer contact information on Google Play, the developer receives your email address and message.',
+  'This information is used only to respond to your support or privacy request.',
+  'It is not sold, used for advertising or analytics, or shared with third parties except the email services needed to deliver the correspondence.',
+  'Support correspondence may be retained as needed to resolve the request.',
+  'You may request its deletion by contacting gumedesduduzo@gmail.com.',
   "Clear Slim Launcher's storage in Android settings or uninstall it to remove its local app data.",
   'The app disables Android cloud backup; device-to-device transfers may still depend on your device manufacturer and Android version.',
   'The developer holds no server copy of your launcher data.',
@@ -127,7 +134,7 @@ test('privacy route and assets work on direct load and refresh', async ({
       await expect(page.getByRole('main')).toContainText(text)
     }
     await expect(page.getByRole('main')).not.toContainText(
-      /email address|phone number|geographic location|ticker around/i,
+      /requests the Ubuntu font|Google Play services|ticker around/i,
     )
     await expect(
       page.getByRole('link', { name: 'open source', exact: true }),
@@ -135,9 +142,21 @@ test('privacy route and assets work on direct load and refresh', async ({
     await expect(
       page.getByRole('link', { name: 'GitHub Issues' }),
     ).toHaveAttribute('href', `${sourceUrl}/issues`)
-    await expect(
-      page.getByRole('link', { name: "Google's privacy policy" }),
-    ).toHaveAttribute('href', 'https://policies.google.com/privacy')
+    const contacts = page.getByRole('link', {
+      name: 'gumedesduduzo@gmail.com',
+      exact: true,
+    })
+    await expect(contacts).toHaveCount(2)
+    for (const contact of await contacts.all()) {
+      await expect(contact).toHaveAttribute(
+        'href',
+        'mailto:gumedesduduzo@gmail.com',
+      )
+    }
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      'href',
+      'https://slimlauncher.com/privacy',
+    )
     const logo = page.getByAltText('Slim logo')
     await expect(logo).toHaveAttribute('src', '/img/slim-logo.jpg')
     await expect
