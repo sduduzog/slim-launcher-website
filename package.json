@@ -5,10 +5,10 @@
   "author": "Beautus",
   "private": true,
   "type": "module",
-  "packageManager": "npm@11.11.0",
+  "packageManager": "npm@11.20.0",
   "engines": {
-    "node": "24.18.0",
-    "npm": "11.11.0"
+    "node": "26.13.0",
+    "npm": "11.20.0"
   },
   "scripts": {
     "dev": "nuxt",

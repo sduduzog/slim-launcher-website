@@ -7,7 +7,7 @@ in production.
 
 ## Development
 
-Use Node.js **24.18.0** from `.node-version` and npm **11.11.0**.
+Use Node.js **26.13.0** from `.node-version` and npm **11.20.0**.
 The project enforces these exact versions to keep local, CI, and hosting installs
 consistent:
 
