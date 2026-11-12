@@ -97,7 +97,6 @@ links at desktop and mobile widths, including with JavaScript disabled. Only the
 promote production or attach `slimlauncher.com` as a Worker custom domain.
 
 Keep the last working production deployment available for Cloudflare rollback.
-Dependabot branch builds are previews, not proof that `master` failed.
 
 ## Dependency updates
 
@@ -116,15 +115,13 @@ Do not bypass `ignore-scripts` globally to make an update install. If a dependen
 needs an install hook, review that code and its downloads before explicitly
 running it or choosing an alternative.
 
-Dependabot groups minor/patch npm updates and opens major updates separately.
-It also updates the full commit SHA pins on GitHub Actions. Keep the version
-comments beside these pins for readability; do not replace them with mutable
-tags. CI uses a read-only token, does not persist checkout credentials, and has a
-job timeout. Browser installation uses the locked local CLI, not an `npx`
-fallback that could download an unreviewed package.
+Keep the full commit SHA pins on GitHub Actions and the version comments beside
+these pins for readability; do not replace them with mutable tags. CI uses a
+read-only token, does not persist checkout credentials, and has a job timeout.
+Browser installation uses the locked local CLI, not an `npx` fallback that could
+download an unreviewed package.
 
-Require the `validate` CI job and human review through GitHub branch protection;
-enable Dependabot alerts and security updates in GitHub settings as well.
+Require the `validate` CI job and human review through GitHub branch protection.
 These repository-level controls require configuration on GitHub; committing this
 workflow does not enable them. This repository does not enable auto-merge.
 Major Nuxt, Vue, and Tailwind upgrades
